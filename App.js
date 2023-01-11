@@ -73,27 +73,26 @@ export default function App() {
   function SvgLevel() {
     return (
       <Svg
-        style={{overflow:"hidden"}}
-        height={"100%"}
+        style={{ overflow: "hidden" }}
+        height={"150%"}
         width={"100%"}
-        viewBox="0 0 500 1000"
+        viewBox="0 0 500 1200"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <Path
-          d="M0.00,49.98 C149.99,150.00 349.20,-49.98 500.00,49.98 L500.00,1000.00 L0.00,1000.00 Z"
+          d="M0.00,49.98 C149.99,150.00 349.20,-49.98 500.00,49.98 L500.00,1200.00 L0.00,1200.00 Z"
           fill="url(#b)"
+          transform="translate(0 -100)"
         />
         <Defs>
           <LinearGradient
             id="b"
-            x1={1023.47}
-            y1={150.74}
-            x2={1023.47}
+            y1="100%"
             gradientUnits="userSpaceOnUse"
           >
-            <Stop stopColor="rgba(85, 88, 218, 1)" offset="0%" />
-            <Stop stopColor="rgba(95, 209, 249, 1)" offset="100%" />
+            <Stop stopColor="rgba(95, 209, 249, 1)" offset="0%" />
+            <Stop stopColor="rgba(85, 88, 218, 1)" offset="100%" />
           </LinearGradient>
         </Defs>
       </Svg>
@@ -129,10 +128,10 @@ export default function App() {
         <View style={styles.whitebox}>
           <View style={styles.margen}>
             <View style={styles.nivel}>
-              <SvgLevel style={{position:"absolute"}}/>
+              <SvgLevel style={{ position: "absolute" }} />
             </View>
           </View>
-          {/* <View style={styles.containerSVGlevel}></View> */}
+          <View style={styles.containerSVGlevel}></View>
         </View>
       </View>
     </View>
@@ -174,15 +173,16 @@ const styles = StyleSheet.create({
     paddingTop: "20%",
   },
   margen: {
-    width:"100%",
-    height:"100%",
-    backgroundColor:"#000"
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#000",
   },
   nivel: {
     width: "100%",
     height: "100%",
     backgroundColor: "#C8C8C8",
     borderRadius: 20,
+    overflow: "hidden",
   },
   containerSVGlevel: {
     width: "106%",
