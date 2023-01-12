@@ -1,33 +1,67 @@
-import { StatusBar } from "expo-status-bar";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   Dimensions,
-  TouchableOpacity,
+  Animated,
+  Easing,
 } from "react-native";
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import ButtonGradient from "./ButtonGradient";
+import SvgLevel from "./components/SvgLevel";
 
 SplashScreen.preventAutoHideAsync();
 
 const { width, height } = Dimensions.get("window");
+const AnimatedSVG = Animated.createAnimatedComponent(SvgLevel);
 
 export default function App() {
+  const [widthLevel, setWidth] = React.useState("");
+  const [heightLevel, setheight] = React.useState("");
+
+  const onLayout = (event) => {
+    const { x, y, height, width } = event.nativeEvent.layout;
+    setWidth(width);
+    setheight(height);
+  };
+
+  const [aniX, setaniX] = React.useState(new Animated.Value(0));
+  const [aniY, setaniY] = React.useState(new Animated.Value(0));
+  const [isAnimated, setIsAnimated] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isAnimated) {
+      Animated.loop(
+        Animated.timing(aniX, {
+          toValue: -widthLevel,
+          duration: 6000,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        })
+      ).start();
+    }
+  });
+
+  const levelUp = () => {
+    Animated.timing(aniY, {
+      toValue: height/10,
+      duration: 6000,
+      useNativeDriver: true,
+    }).start();
+  }
+
   const [fontsLoaded] = useFonts({
     MontserratBold: require("./assets/fonts/Montserrat-Bold.ttf"),
     MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if ((fontsLoaded, widthLevel)) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, widthLevel]);
 
   if (!fontsLoaded) {
     return null;
@@ -70,34 +104,7 @@ export default function App() {
       </Svg>
     );
   }
-  function SvgLevel() {
-    return (
-      <Svg
-        style={{ overflow: "hidden" }}
-        height={"150%"}
-        width={"100%"}
-        viewBox="0 0 500 1200"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <Path
-          d="M0.00,49.98 C149.99,150.00 349.20,-49.98 500.00,49.98 L500.00,1200.00 L0.00,1200.00 Z"
-          fill="url(#b)"
-          transform="translate(0 -100)"
-        />
-        <Defs>
-          <LinearGradient
-            id="b"
-            y1="100%"
-            gradientUnits="userSpaceOnUse"
-          >
-            <Stop stopColor="rgba(95, 209, 249, 1)" offset="0%" />
-            <Stop stopColor="rgba(85, 88, 218, 1)" offset="100%" />
-          </LinearGradient>
-        </Defs>
-      </Svg>
-    );
-  }
+
   return (
     <View style={styles.mainContainer} onLayout={onLayoutRootView}>
       <View style={styles.containerSVG}>
@@ -127,10 +134,12 @@ export default function App() {
         </View>
         <View style={styles.whitebox}>
           <View style={styles.margen}>
-            <View style={styles.nivel}>
-              <SvgLevel style={{ position: "absolute" }} />
+            <View onLayout={onLayout} style={styles.nivel}>
+              <AnimatedSVG
+                style={[styles.box, { transform: [{ translateX: aniX, translateY: aniY }] }]}
+              />
             </View>
-          </View>
+          </View>          
           <View style={styles.containerSVGlevel}></View>
         </View>
       </View>
