@@ -2,8 +2,11 @@ import { View, Text, StyleSheet, Animated, Easing, Button } from "react-native";
 import React, { useEffect, useRef } from "react";
 import Layaout from "../components/Layaout";
 import SvgLevel from "../components/SvgLevel";
+import { getLevelId } from "../database/connection";
 
+var result = 0;
 const AnimatedSVG = Animated.createAnimatedComponent(SvgLevel);
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 const LevelScreen = () => {
   const [widthLevel, setWidth] = React.useState("");
@@ -18,7 +21,7 @@ const LevelScreen = () => {
   const isAnimated = useRef(false).current;
 
   useEffect(() => {
-    onPressButton();
+    yMove();
     //Animación
     if (!isAnimated) {
       Animated.loop(
@@ -32,13 +35,26 @@ const LevelScreen = () => {
     }
   });
 
-  const onPressButton = ()=>{
+  const yMove = async () => {
+    result = (await getLevelId(1)) / 100;
+    console.log(result);
+    onPressButton();
+    await delay(20000);
+    yMove();
+  };
+
+  const onPressButton = () => {
     Animated.timing(aniY, {
-      toValue: 200,
+      toValue: result,
       duration: 6000,
       useNativeDriver: true,
     }).start();
-  }
+  };
+
+  let translateLevelY = aniY.interpolate({
+    inputRange: [1, 4],
+    outputRange: [0, 400],
+  });
 
   return (
     <Layaout>
@@ -69,7 +85,7 @@ const LevelScreen = () => {
             <AnimatedSVG
               style={[
                 styles.box,
-                { transform: [{ translateX: aniX, translateY: aniY }] },
+                { transform: [{ translateX: aniX, translateY: translateLevelY }] },
               ]}
             />
           </View>
