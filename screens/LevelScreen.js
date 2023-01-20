@@ -1,13 +1,11 @@
-import { View, Text, StyleSheet, Animated, Easing } from "react-native";
-import React, { useEffect } from "react";
+import { View, Text, StyleSheet, Animated, Easing, Button } from "react-native";
+import React, { useEffect, useRef } from "react";
 import Layaout from "../components/Layaout";
 import SvgLevel from "../components/SvgLevel";
 
 const AnimatedSVG = Animated.createAnimatedComponent(SvgLevel);
-var level = 0;
 
 const LevelScreen = () => {
-
   const [widthLevel, setWidth] = React.useState("");
 
   const onLayout = async (event) => {
@@ -15,10 +13,12 @@ const LevelScreen = () => {
     await setWidth(width);
   };
 
-  const [aniX, setaniX] = React.useState(new Animated.Value(0));
-  const [isAnimated, setIsAnimated] = React.useState(false);
+  const aniX = useRef(new Animated.Value(0)).current;
+  const aniY = useRef(new Animated.Value(0)).current;
+  const isAnimated = useRef(false).current;
 
   useEffect(() => {
+    onPressButton();
     //Animación
     if (!isAnimated) {
       Animated.loop(
@@ -31,6 +31,14 @@ const LevelScreen = () => {
       ).start();
     }
   });
+
+  const onPressButton = ()=>{
+    Animated.timing(aniY, {
+      toValue: 200,
+      duration: 6000,
+      useNativeDriver: true,
+    }).start();
+  }
 
   return (
     <Layaout>
@@ -61,7 +69,7 @@ const LevelScreen = () => {
             <AnimatedSVG
               style={[
                 styles.box,
-                { transform: [{ translateX: aniX, translateY: level }] },
+                { transform: [{ translateX: aniX, translateY: aniY }] },
               ]}
             />
           </View>
