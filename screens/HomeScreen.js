@@ -1,64 +1,91 @@
-import { View, Text, StyleSheet, Dimensions, Button } from "react-native";
-import React, { useEffect } from "react";
-import { getLevel } from "../database/supabase";
+import { StyleSheet, Text, View, TextInput } from "react-native";
+import React from "react";
 import Layaout from "../components/Layaout";
-
-var level = 0;
-const { width, height } = Dimensions.get("window");
+import ButtonGradient from "../components/ButtonGradient";
+import QrCodeButton from "../components/svg/QrCodeButton";
+import QrCodeHeader from "../components/svg/QrCodeHeader";
 
 const HomeScreen = () => {
-  useEffect(() => {
-    console.log(10);
-  }, []);
-
-  const [widthLevel, setWidth] = React.useState("");
-  const onLayout = async (event) => {
-    const { x, y, height, width } = await event.nativeEvent.layout;
-    setWidth(width);
-  };
-
-  console.log("hola");
-
   return (
     <Layaout>
-      <View style={styles.header}>
-        <Text style={styles.h1}>Hola Mundo</Text>
-      </View>
-      <View style={styles.body}>
-        <View style={styles.card}>
-          <View style={styles.bottom} onLayout={onLayout}>
-            <View
-              style={[styles.cube, { transform: [{ translateY: level }] }]}
-            ></View>
+      <View style={styles.main}>
+        <View style={styles.header}>
+          <View style={styles.whiteBox}>
+            <Text style={styles.h1}>ScanQr</Text>
+            <Text style={styles.p}>
+              Escanea el código QR o ingresa el código para vincularte al sensor
+              de medición
+            </Text>
+            <QrCodeHeader style={{width:"60%", height:"60%"}}/>
           </View>
         </View>
-        <Button title="Hola"></Button>
+        <View style={styles.body}>
+          <View style={styles.textInput}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <TextInput
+                placeholder="Codigo ID"
+                autoCapitalize="characters"
+                autoComplete="off"
+                autoCorrect={false}
+                autoFocus={true}
+                maxLength={9}
+              />
+              <View
+                style={{
+                  width: 40,
+                }}
+              >
+                <QrCodeButton style={styles.qr} />
+              </View>
+            </View>
+          </View>
+          <TextInput
+            placeholder="Profundidad (cm)"
+            style={styles.textInput}
+            maxLength={4}
+          />
+          <ButtonGradient />
+        </View>
       </View>
     </Layaout>
   );
 };
 
+export default HomeScreen;
+
 const styles = StyleSheet.create({
-  header: {
-    borderColor: "red",
-    borderWidth: 2,
+  main: {
     width: "100%",
-    height: "30%",
+    height: "100%",
+    felx: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: {
+    flex: 3,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
   body: {
-    borderColor: "blue",
-    borderWidth: 2,
+    flex: 2,
     width: "100%",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  whiteBox: {
+    width: "75%",
     height: "70%",
+    padding: "5%",
     alignItems: "center",
     justifyContent: "center",
-  },
-  card: {
     backgroundColor: "#fff",
-    width: "80%",
-    height: "90%",
     borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
@@ -68,30 +95,33 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    padding: "4%",
   },
-  cube: {
-    width: 80,
-    height: 80,
-    backgroundColor: "#8E44AD",
-    borderRadius: 20,
-  },
-  bottom: {
-    backgroundColor: "#c2c2c2",
-    width: "100%",
-    height: "100%",
-    borderRadius: 15,
+  textInput: {
+    padding: 10,
+    paddingStart: 30,
+    paddingEnd: 20,
+    width: "80%",
+    height: 50,
+    marginTop: 20,
+    borderRadius: 30,
+    backgroundColor: "#fff",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
   h1: {
-    color: "#fff",
-    fontSize: 20,
-    fontFamily: "MontserratBold",
+    fontSize: 25,
   },
   p: {
-    color: "#fff",
-    fontSize: 17,
-    fontFamily: "MontserratRegular",
+    fontSize: 15,
+    marginTop: 8,
+    color: "gray",
+    textAlign: "center",
   },
 });
-
-export default HomeScreen;

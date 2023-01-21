@@ -32,7 +32,7 @@ const SvgTop = () => {
           x2={1023.47}
           gradientUnits="userSpaceOnUse"
         >
-          <Stop stopColor="rgba(95, 209, 249, 1)" offset="100%" />
+          <Stop stopColor="#5ba1ed" offset="100%" />
           <Stop stopColor="rgba(85, 88, 218, 1)" offset="0%" />
         </LinearGradient>
       </Defs>

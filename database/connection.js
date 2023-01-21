@@ -1,11 +1,5 @@
 const API_URL = "http://192.168.14.177:3000/example";
 
-export const deleteLevel = async (id) => {
-  await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-  });
-};
-
 export const saveLevel = async (newLevel) => {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -16,11 +10,6 @@ export const saveLevel = async (newLevel) => {
     },
     body: JSON.stringify(newTask),
   });
-  return await res.json();
-};
-
-export const getLevel = async () => {
-  const res = await fetch(API_URL);
   return await res.json();
 };
 

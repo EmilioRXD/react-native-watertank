@@ -1,15 +1,17 @@
 import { View, Text, StyleSheet, Animated, Easing, Button } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layaout from "../components/Layaout";
 import SvgLevel from "../components/SvgLevel";
 import { getLevelId } from "../database/connection";
 
-var result = 0;
 const AnimatedSVG = Animated.createAnimatedComponent(SvgLevel);
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
+var result = 0;
+
 const LevelScreen = () => {
-  const [widthLevel, setWidth] = React.useState("");
+  const [widthLevel, setWidth] = useState("");
+  const [numNivel, setNumNivel] = useState("");
 
   const onLayout = async (event) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -36,14 +38,15 @@ const LevelScreen = () => {
   });
 
   const yMove = async () => {
-    result = (await getLevelId(1)) / 100;
+    result = (await getLevelId(1)) / 40;
     console.log(result);
-    onPressButton();
+    numNivelFun(Math.floor(result));
+    yAnimation();
     await delay(20000);
     yMove();
   };
 
-  const onPressButton = () => {
+  const yAnimation = () => {
     Animated.timing(aniY, {
       toValue: result,
       duration: 6000,
@@ -52,9 +55,15 @@ const LevelScreen = () => {
   };
 
   let translateLevelY = aniY.interpolate({
-    inputRange: [1, 4],
+    inputRange: [1.8, 10],
     outputRange: [0, 400],
   });
+
+  const numNivelFun = (result) => {
+    result <= 1
+      ? setNumNivel(10)
+      : setNumNivel(11-result)
+  };
 
   return (
     <Layaout>
@@ -67,7 +76,7 @@ const LevelScreen = () => {
             fontFamily: "MontserratRegular",
           }}
         >
-          8
+          {numNivel}
         </Text>
         <Text
           style={{
@@ -85,7 +94,11 @@ const LevelScreen = () => {
             <AnimatedSVG
               style={[
                 styles.box,
-                { transform: [{ translateX: aniX, translateY: translateLevelY }] },
+                {
+                  transform: [
+                    { translateX: aniX, translateY: translateLevelY },
+                  ],
+                },
               ]}
             />
           </View>

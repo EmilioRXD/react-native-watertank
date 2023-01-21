@@ -13,15 +13,15 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Level"
-          component={LevelScreen}
+          name="Home"
+          component={HomeScreen}
           options={({ navigation }) => ({
             headerMode: "none",
           })}
         />
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Level"
+          component={LevelScreen}
           options={({ navigation }) => ({
             headerMode: "none",
           })}

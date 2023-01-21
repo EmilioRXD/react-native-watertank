@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+            .cls-1,.cls-2{fill:none;}.cls-2{stroke:#000;stroke-linecap:round;stroke-linejoin:round;}</style>
+  </defs>
+  <path d="M 1.851 12 L 22.149 12 M 6.926 22.149 L 3.543 22.149 C 2.61 22.149 1.851 21.39 1.851 20.457 L 1.851 17.074 M 22.149 17.074 L 22.149 20.457 C 22.149 21.39 21.39 22.149 20.457 22.149 L 17.074 22.149 M 17.074 1.851 L 20.457 1.851 C 21.39 1.851 22.149 2.61 22.149 3.543 L 22.149 6.926 M 6.926 1.851 L 3.543 1.851 C 2.61 1.851 1.851 2.61 1.851 3.543 L 1.851 6.926" class="cls-2" style="stroke: rgb(15, 58, 226); fill-rule: evenodd; stroke-width: 3px;"/>
+</svg>
